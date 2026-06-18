@@ -1,0 +1,36 @@
+name: mintro
+description: Mintro — learn economics, save money, build the habit.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^2.5.1
+
+  # Navigation
+  go_router: ^14.2.0
+
+  # Backend
+  supabase_flutter: ^2.5.6
+  http: ^1.2.2
+
+  # UI / formatting
+  google_fonts: ^6.2.1
+  intl: ^0.19.0
+  fl_chart: ^0.68.0
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true

@@ -1,0 +1,38 @@
+# docker-compose.yml
+# Runs the Node API locally with environment variables.
+# Supabase itself is not containerised here — use `supabase start`
+# (Supabase CLI) separately for a fully local Postgres+Auth+Storage,
+# or point SUPABASE_URL at your hosted project for the API only.
+#
+# Usage:
+#   docker compose up --build
+#
+# For Flutter: run `flutter run --dart-define=...` separately on the host
+# since Flutter's device toolchain doesn't run inside Docker.
+
+services:
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      LOG_LEVEL: info
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      SUPABASE_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      ALLOWED_ORIGINS: "http://localhost:3000,http://10.0.2.2:3000"
+      RATE_LIMIT_MAX: 200
+      RATE_LIMIT_WINDOW_MS: 60000
+    volumes:
+      # Mount source for live reload in dev (tsx watch sees changes)
+      - ./services/api/src:/app/src:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
